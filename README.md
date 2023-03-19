@@ -38,7 +38,7 @@ Content-Length: 73
 X-Vulnerable-Header: param=value
 Strict-Transport-Security: max-age=0
 
-<script>location="http://hsts.local/?cb=3423821759"</script>
+<script>location="http://hsts.local/?cb=3401833577"</script>
 Strict-Transport-Security: max-age=31536000
 Connection: close
 
@@ -139,22 +139,6 @@ Search the browser's settings for `cert` or follow these instructions:
    ![Screenshot of the browser developer tools that show a 307 redirect](/images/02.png)
 
 5. Click or copy&paste the *evil link*. It will inject an HSTS header with `max-age=0` to delete the HSTS entry. Afterwards it will redirect the user to `http://hsts.local?cb=...`
-   The final response of the webserver will look like this:
-   ```http hl_lines="6 7 8 9"
-   HTTP/1.1 200 OK
-   Server: Werkzeug/2.2.3 Python/3.8.10
-   Date: Sun, 19 Mar 2023 21:43:48 GMT
-   Content-Type: text/html; charset=utf-8
-   Content-Length: 73
-   X-Vulnerable-Header: param=value
-   Strict-Transport-Security: max-age=0
-
-   <script>location="http://hsts.local/?cb=3401833577"</script>
-   Strict-Transport-Security: max-age=31536000
-   Connection: close
-
-   <html><head><title>Title</title></head><body>Just some HTML</body></html>
-   ```
 
    Note that an HTTP request is sent via HTTP that contains the secret cookie.
    ![Screenshot of the browser developer tools that show a 301 redirect again](/images/03.png)
