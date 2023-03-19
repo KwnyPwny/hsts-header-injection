@@ -92,6 +92,7 @@ Search the browser's settings for `cert` or follow these instructions:
 
 3. Call `http://hsts.local/`.
    ![Screenshot of the web page from this project](/images/00.png)
+   
    Recognize that you receive a 301 to `https://hsts.local/` as no HSTS header is set.
    Also recognized that a secret cookie is returned in the server's response.
    ![Screenshot of the browser developer tools that show a 301 redirect](/images/01.png)
