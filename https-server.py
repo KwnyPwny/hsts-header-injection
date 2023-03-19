@@ -24,4 +24,4 @@ def vuln():
 	return resp
 
 if __name__ == '__main__':
-	app.run(port=443, ssl_context=('certs/hsts.local/hsts.local.crt', 'certs/hsts.local/hsts.local.key'))
+	app.run(port=443, ssl_context=('certs/hsts.local.crt', 'certs/hsts.local.key'))
