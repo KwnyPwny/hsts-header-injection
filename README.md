@@ -3,7 +3,7 @@
 ## What is this?
 
 The HTTP Strict Transport Security (HSTS) header is meant to secure browsing, by forcing the browser to use HTTPS instead of HTTP.
-Browsers cache the *freshest* HSTS policy information on behalf of an HSTS host (see RFC6797 Section 5.3)[https://www.rfc-editor.org/rfc/rfc6797#section-5.3].
+Browsers cache the *freshest* HSTS policy information on behalf of an HSTS host [see RFC6797 Section 5.3](https://www.rfc-editor.org/rfc/rfc6797#section-5.3).
 The header `Strict-Transport-Security: max-age=0` deletes the HSTS policy for the given host.
 This can be exploited when a web application has an HTTP header injection vulnerability, by deleting the HSTS policy and redirecting the victim to HTTP.
 A cookie without the secure-flag or other sensitive data, like the authorization header, will be transmitted without encryption.
